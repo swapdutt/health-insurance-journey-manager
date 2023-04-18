@@ -7,6 +7,10 @@
     <groupId>com.health.insurance</groupId>
     <artifactId>health-insurance-journey-manager</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>service-registration-manager</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
