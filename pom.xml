@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-registration-manager</module>
+        <module>medical-history-journey-manager</module>
     </modules>
 
     <parent>
