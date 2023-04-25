@@ -37,4 +37,14 @@ public class MedicalConditions {
     @JoinColumn(name = "lifestyle_id")
     Lifestyle lifestyle = null;
 
+    public MedicalConditions(final MedicalConditions medicalConditions) {
+        this.setMedicalConditionsId(medicalConditions.getMedicalConditionsId());
+        this.setPersonalMedicalConditionsIndicator(medicalConditions.getPersonalMedicalConditionsIndicator());
+        this.setPersonalMedicalConditionsList(medicalConditions.getPersonalMedicalConditionsList());
+        this.setLabTestsIndicator(medicalConditions.getLabTestsIndicator());
+        this.setLabTests(medicalConditions.getLabTests());
+        this.setLifestyleIndicator(medicalConditions.getLifestyleIndicator());
+        this.setLifestyle(medicalConditions.getLifestyle());
+    }
+
 }
