@@ -1,28 +1,63 @@
 package com.health.insurance.medicalhistory.service;
 
+import com.health.insurance.medicalhistory.exception.ErrorMessageConstant;
 import com.health.insurance.medicalhistory.exception.RecordExistException;
 import com.health.insurance.medicalhistory.exception.RecordNotFoundException;
 import com.health.insurance.medicalhistory.model.utility.builder.DiseaseQuestionnaireBuilder;
+import com.health.insurance.medicalhistory.model.utility.builder.LifestyleBuilder;
+import com.health.insurance.medicalhistory.model.utility.builder.PersonalMedicalConditionsBuilder;
 import com.health.insurance.medicalhistory.model.utility.dto.create.CreateDiseaseQuestionnaire;
-import com.health.insurance.medicalhistory.model.utility.dto.update.UpdateDiseaseQuestionnaire;
+import com.health.insurance.medicalhistory.model.utility.dto.create.CreateLifestyle;
+import com.health.insurance.medicalhistory.model.utility.dto.create.CreatePersonalMedicalConditions;
 import com.health.insurance.medicalhistory.model.utility.entity.DiseaseQuestionnaire;
+import com.health.insurance.medicalhistory.model.utility.entity.Lifestyle;
+import com.health.insurance.medicalhistory.model.utility.entity.PersonalMedicalConditions;
 import com.health.insurance.medicalhistory.repository.DiseaseQuestionnaireRepository;
+import com.health.insurance.medicalhistory.repository.LifestyleRepository;
+import com.health.insurance.medicalhistory.repository.PersonalMedicalConditionsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MedicalConditionsService {
 
-    DiseaseQuestionnaireRepository diseaseQuestionnaireRepository;
+    PersonalMedicalConditionsRepository personalMedicalConditionsRepository;
+    PersonalMedicalConditionsBuilder personalMedicalConditionsBuilder;
+    LifestyleRepository lifestyleRepository;
+    LifestyleBuilder lifestyleBuilder;
 
+    DiseaseQuestionnaireRepository diseaseQuestionnaireRepository;
     DiseaseQuestionnaireBuilder diseaseQuestionnaireBuilder;
+
+    public PersonalMedicalConditions findPersonalMedicalConditionsRecordById(Integer personalMedicalConditionsId) throws RecordNotFoundException {
+
+        return personalMedicalConditionsRepository.findById(personalMedicalConditionsId).orElseThrow(
+                () -> new RecordNotFoundException(ErrorMessageConstant.DATA_NOT_PRESENT)
+        );
+
+    }
+
+    public PersonalMedicalConditions createPersonalMedicalConditionsRecord(CreatePersonalMedicalConditions request) throws RecordExistException {
+
+        List<PersonalMedicalConditions> personalMedicalConditionsList = personalMedicalConditionsRepository.findPersonalMedicalConditionsListById(request.getPersonalMedicalConditionsId());
+
+        try {
+            if (personalMedicalConditionsList.isEmpty()) {
+                return personalMedicalConditionsRepository.save(personalMedicalConditionsBuilder.buildFromRequest(request));
+            }
+        } catch (RecordExistException e) {
+            throw new RecordExistException(ErrorMessageConstant.DATA_ALREADY_PRESENT);
+        }
+
+        return null;
+
+    }
 
     public DiseaseQuestionnaire findDiseaseQuestionnaireRecordById(Integer diseaseQuestionnaireId) throws RecordNotFoundException {
 
         return diseaseQuestionnaireRepository.findById(diseaseQuestionnaireId).orElseThrow(
-                () -> new RecordNotFoundException("The requested data is not present!!!")
+                () -> new RecordNotFoundException(ErrorMessageConstant.DATA_NOT_PRESENT)
         );
     }
 
@@ -31,43 +66,35 @@ public class MedicalConditionsService {
         List<DiseaseQuestionnaire> diseaseQuestionnaireList = diseaseQuestionnaireRepository.findDiseaseQuestionnaireListById(request.getDiseaseQuestionnaireId());
 
         try {
-            if (null != diseaseQuestionnaireList) {
+            if (diseaseQuestionnaireList.isEmpty()) {
                 return diseaseQuestionnaireRepository.save(diseaseQuestionnaireBuilder.buildFromRequest(request));
             }
         } catch (RecordExistException e) {
-            throw new RecordExistException("The requested data already exists!!!");
+            throw new RecordExistException(ErrorMessageConstant.DATA_ALREADY_PRESENT);
         }
 
         return null;
     }
 
-    public DiseaseQuestionnaire updateDiseaseQuestionnaireRecord(Integer diseaseQuestionnaireId, UpdateDiseaseQuestionnaire request) throws RecordNotFoundException {
+    public Lifestyle findLifestyleRecordById(Integer lifestyleId) throws RecordNotFoundException {
 
-        DiseaseQuestionnaire diseaseQuestionnaireToUpdate = diseaseQuestionnaireRepository.findDiseaseQuestionnaireById(diseaseQuestionnaireId);
-
-        try {
-            if (!diseaseQuestionnaireId.equals(diseaseQuestionnaireToUpdate.getDiseaseQuestionnaireId())) {
-                throw new RecordNotFoundException("The requested data is not present!!!");
-            } else {
-                return diseaseQuestionnaireRepository.save(diseaseQuestionnaireBuilder.updateFromRequest(diseaseQuestionnaireToUpdate, request));
-            }
-        } catch (RecordNotFoundException e) {
-            throw new RecordNotFoundException("The requested data is not present!!!");
-        }
+        return lifestyleRepository.findById(lifestyleId).orElseThrow(() -> new RecordNotFoundException(ErrorMessageConstant.DATA_NOT_PRESENT));
 
     }
 
-    public void deleteDiseaseQuestionnaireRecordById(Integer diseaseQuestionnaireId) throws RecordNotFoundException {
+    public Lifestyle createLifestyleRecord(CreateLifestyle request) throws RecordExistException {
 
-        Optional<DiseaseQuestionnaire> diseaseQuestionnaire = diseaseQuestionnaireRepository.findById(diseaseQuestionnaireId);
+        List<Lifestyle> lifestyleList = lifestyleRepository.findLifestyleListById(request.getLifestyleId());
 
         try {
-            if (diseaseQuestionnaire.isPresent()) {
-                diseaseQuestionnaireRepository.deleteById(diseaseQuestionnaireId);
+            if (lifestyleList.isEmpty()) {
+                return lifestyleRepository.save(lifestyleBuilder.buildFromRequest(request));
             }
-        } catch (RecordNotFoundException e) {
-            throw new RecordNotFoundException("The requested data is not present!!!");
+        } catch (RecordExistException e) {
+            throw new RecordExistException(ErrorMessageConstant.DATA_ALREADY_PRESENT);
         }
+
+        return null;
 
     }
 

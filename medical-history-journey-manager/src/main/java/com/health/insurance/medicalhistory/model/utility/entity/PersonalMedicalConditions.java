@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class PersonalMedicalConditions {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
-    Integer id;
+    String id = UUID.randomUUID().toString();
     Integer personalMedicalConditionsId;
 
     @OneToOne
@@ -33,5 +34,18 @@ public class PersonalMedicalConditions {
     String typeOfBiopsy;
     LocalDate lastConsultationDate;
     Integer diagnosisYear;
+
+    public PersonalMedicalConditions(final PersonalMedicalConditions personalMedicalConditions) {
+        this.setPersonalMedicalConditionsId(personalMedicalConditions.getPersonalMedicalConditionsId());
+        this.setDiseaseQuestionnaire(personalMedicalConditions.getDiseaseQuestionnaire());
+        this.setNameOfDisease(personalMedicalConditions.getNameOfDisease());
+        this.setTypeOfDisease(personalMedicalConditions.getTypeOfDisease());
+        this.setTypeOfTreatment(personalMedicalConditions.getTypeOfTreatment());
+        this.setCurrentStatusOfTreatment(personalMedicalConditions.getCurrentStatusOfTreatment());
+        this.setTypeOfComplication(personalMedicalConditions.getTypeOfComplication());
+        this.setTypeOfBiopsy(personalMedicalConditions.getTypeOfBiopsy());
+        this.setLastConsultationDate(personalMedicalConditions.getLastConsultationDate());
+        this.setDiagnosisYear(personalMedicalConditions.getDiagnosisYear());
+    }
 
 }

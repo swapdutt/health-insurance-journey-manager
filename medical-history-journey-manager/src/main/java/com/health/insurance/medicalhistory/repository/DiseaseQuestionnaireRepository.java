@@ -11,6 +11,4 @@ public interface DiseaseQuestionnaireRepository extends JpaRepository<DiseaseQue
 
     List<DiseaseQuestionnaire> findDiseaseQuestionnaireListById(Integer diseaseQuestionnaireId);
 
-    DiseaseQuestionnaire findDiseaseQuestionnaireById(Integer diseaseQuestionnaireId);
-
 }

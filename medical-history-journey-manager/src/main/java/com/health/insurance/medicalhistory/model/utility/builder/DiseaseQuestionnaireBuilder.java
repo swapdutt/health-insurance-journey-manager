@@ -75,9 +75,7 @@ public class DiseaseQuestionnaireBuilder {
             throw new InvalidRequestException("The data set required to update the entity is empty or not in proper format");
         }
 
-
         return diseaseQuestionnaireAfterUpdate;
-
     }
 
 }
