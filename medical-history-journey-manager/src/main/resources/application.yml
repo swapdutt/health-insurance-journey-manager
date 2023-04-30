@@ -23,7 +23,7 @@ server:
 #Swagger related configuration
 springdoc:
   swagger-ui:
-    path= swagger-ui.html
+    path: swagger-ui.html
 
 #Eureka related configuration
 eureka:
